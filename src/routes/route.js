@@ -8,6 +8,95 @@ const req = require('express/lib/request');
 const { route } = require('express/lib/application');
 
 
+
+//(1)-->get api problem 1
+router.get("/GET/movies" , function(req , res){
+    let moviesArr = ["Rang de basanti" , "The shining" , "Lord of the rings" , "Batman begins"];
+    // console.log(moviesArr);
+
+    // res.send("Successfully print the list of movies.");
+    res.send(moviesArr);
+});
+
+//(2)-->get api problem 2
+router.get("/GET/movies/:indexNumber" , function(req , res){
+    let moviesArr = ["Rang de basanti" , "The shining" , "Lord of the rings" , "Batman begins"];
+    //(3)--> get api problem 3
+    if(req.params.indexNumber > moviesArr.length-1){
+        //  console.log("Error:plase define index number less than or equlas to 3");
+         res.send("Error:plase define index number less than or equlas to 3");
+    }else{
+       
+        // console.log("The movie of index "+req.params.indexNumber+" is: "+moviesArr[req.params.indexNumber]);
+        res.send("The movie of index "+req.params.indexNumber+" is: "+moviesArr[req.params.indexNumber]);
+    }
+
+    // res.send("Successfully print the indexed movie.");
+    // res.send(moviesArr[req.params.indexNumber]);
+});
+
+//(4)-->get api problem 4
+router.get("/GET/films" , function(req , res){
+    let filmsArr = [ {
+        id: 1,
+        name: 'The Shining'
+       }, {
+        id: 2,
+        name: 'Incendies'
+       }, {
+        id: 3,
+        name: 'Rang de Basanti'
+       }, {
+        id: 4,
+        name: 'Finding Nemo'
+       }]
+    //    console.log(filmsArr);
+
+       res.send(filmsArr);
+       
+});
+
+//(5)-->get api problem 5
+router.get("/films/:filmId" , function(req , res){
+    let filmsArr1 = [ {
+        "id": 1,
+        "name": 'The Shining'
+       }, {
+        "id": 2,
+        "name": 'Incendies'
+       }, {
+        "id": 3,
+        "name": 'Rang de Basanti'
+       }, {
+        "id": 4,
+        "name": 'Finding Nemo'
+    }]
+     for(let i = 0 ; i<filmsArr1.length ; i++){
+        if(filmsArr1[i].id == req.params.filmId){
+            res.send(filmsArr1[i]);
+            break;
+        }
+        if(filmsArr1[i].id > filmsArr1.length-1){
+            res.send("No movies exist with this id. Please Enter one number from 1 upto 4");
+            
+        }
+    }
+    // res.send("No movies exist with this id. Please Enter between , from 0 upto 3");
+    // let obj = {
+    //     "id" : 1,
+    //     "name" : "Fida"
+    // }
+    // if(obj.id == req.params.filmId){
+    //         res.send(obj.name);
+    //     }
+    //     res.send("No movies exist with this id. Please Enter between , from 0 upto 3")
+
+});
+
+
+
+
+
 router.get("/profile-details", function(req, res){
     // Write the LOGIC here
     res.send('dummy response')
