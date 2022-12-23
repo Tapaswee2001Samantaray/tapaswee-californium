@@ -13,6 +13,8 @@ router.get("/test-me", function (req, res) {
 
 
 router.post("/createBook", BookController.createBook  )
+router.get("/getMsg" , BookController.getMsg);
+router.get("/getAllMsg" , BookController.getAllMsg);
 
 
 

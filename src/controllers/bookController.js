@@ -8,6 +8,14 @@ const createBook= async function (req, res) {
     res.send({msg: savedData})
 }
 
+const getMsg = async function(req , res){
+    res.send("Ur api is working fine.");
+}
+
+const getAllMsg = async function(req , res){
+    res.send("Ur api is working fine again.");
+}
+
 
 
 
@@ -73,6 +81,8 @@ const totalSalesPerAuthor = async function (req, res) {
 
 
 module.exports.createBook = createBook
+module.exports.getMsg = getMsg
+module.exports.getAllMsg = getAllMsg
 module.exports.getBooksData = getBooksData
 module.exports.updateBooks = updateBooks
 module.exports.deleteBooks = deleteBooks
