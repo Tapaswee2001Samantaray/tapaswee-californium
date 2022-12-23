@@ -1,17 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const CustomerController = require("../controllers/customerController");
-const CardController = require("../controllers/cardController");
+const AuthorController = require("../controllers/authorController");
+const PublisherController = require("../controllers/publisherController");
+const BookController = require("../controllers/bookController");
 
-//Create new customer [POST]
-router.post("/createCustomer" , CustomerController.createCustomer);
-//Get all customers List with status ACTIVE [GET]
-router.get("/getCustomers" , CustomerController.getCustomers);
-//Delete customer. [DELETE]
-router.delete("/deleteCustomer" , CustomerController.deleteCustomer);
-//Create new card [POST]
-router.post("/createCard" , CardController.createCard);
-//Get all Card List[GET]
-router.get("/getCard", CardController.getCard);
+router.post("/createAuthor" , AuthorController.createAuthor);
+router.post("/createPublisher" , PublisherController.createPublisher);
+router.post("/createBook" , BookController.createBook);
+router.get("/getBooks" , BookController.getBooks);
+router.put("/updateBooksByPublisher" , BookController.updateBooksByPublisher);
+router.put("/updateBooksPrice" , BookController.updateBooksPrice);
 
 module.exports = router;
