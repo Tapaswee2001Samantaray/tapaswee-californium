@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
         default : 0
     },
     isFreeAppUser : Boolean,
-    date : Date
+    date : String
 });
 
 module.exports = mongoose.model("order" , orderSchema);
