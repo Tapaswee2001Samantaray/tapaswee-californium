@@ -1,20 +1,6 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/userModel");
 
-const tokenValidation = function(req , res , next){
-    let token = req.headers["x-auth-token"];
-  if(!token){
-    return res.send({status:false , msg:"the header token is required."});
-  }
-  
-  let decoded = jwt.verify(token , "functionup-californium-secret-key");
-  if(!decoded){
-    return res.send({status:false , msg:"Invalid token id."});
-  }
-
-  next();
-}
-
 const userValidation = async function(req , res , next){
   let userId = req.params.userId;
   let userDetails = await UserModel.findById(userId);
@@ -25,6 +11,37 @@ const userValidation = async function(req , res , next){
   }
 }
 
+const tokenAuthentication = function(req , res , next){
+    let token = req.headers["x-auth-token"];
+  if(!token){
+    return res.send({status:false , msg:"the header token is required."});
+  }
+  
+  let decoded = jwt.verify(token , "functionup-californium-secret-key");
+  if(!decoded){
+    return res.send({status:false , msg:"Invalid token id."});
+  }
+  next();
+}
 
-module.exports.tokenValidation = tokenValidation;
+const tokenAuthorization = function(req , res){
+  let token = req.headers["x-auth-token"];
+  if(!token){
+    return res.send({status:false , msg:"the header token is required."});
+  }
+
+  let decoded = jwt.verify(token , "functionup-californium-secret-key")
+  if(!decoded){
+    return res.send({status: false , msg:"Invalid token ID"});
+  }
+
+  if(decoded._id != req.params.userId){
+    return res.send({status : false , msg : "The loggdin user is not authorized."})
+  }
+
+  next();
+}
+
 module.exports.userValidation = userValidation;
+module.exports.tokenAuthentication = tokenAuthentication;
+module.exports.tokenAuthorization = tokenAuthorization;
