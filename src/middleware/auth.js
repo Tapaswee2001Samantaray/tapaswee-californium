@@ -21,10 +21,11 @@ const tokenAuthentication = function(req , res , next){
   if(!decoded){
     return res.send({status:false , msg:"Invalid token id."});
   }
+
   next();
 }
 
-const tokenAuthorization = function(req , res){
+const tokenAuthorization = function(req , res , next){
   let token = req.headers["x-auth-token"];
   if(!token){
     return res.send({status:false , msg:"the header token is required."});
@@ -35,7 +36,7 @@ const tokenAuthorization = function(req , res){
     return res.send({status: false , msg:"Invalid token ID"});
   }
 
-  if(decoded._id != req.params.userId){
+  if(decoded.userId != req.params.userId){
     return res.send({status : false , msg : "The loggdin user is not authorized."})
   }
 

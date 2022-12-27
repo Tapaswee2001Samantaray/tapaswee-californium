@@ -8,6 +8,7 @@ router.post("/login" , UserController.logInUser);
 router.get("/users/:userId" , MiddleWare.userValidation , MiddleWare.tokenAuthentication, MiddleWare.tokenAuthorization , UserController.getUser);
 router.put("/users/:userId" , MiddleWare.userValidation , MiddleWare.tokenAuthentication , MiddleWare.tokenAuthorization , UserController.updateUser);
 router.delete("/users/:userId" , MiddleWare.userValidation , MiddleWare.tokenAuthentication , MiddleWare.tokenAuthorization , UserController.deleteUser);
+router.post("/users/:userId/posts" , MiddleWare.userValidation , MiddleWare.tokenAuthentication , MiddleWare.tokenAuthorization , UserController.postMessage);
 
 
 module.exports = router;
