@@ -1,46 +1,56 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/userModel");
 
-const userValidation = async function(req , res , next){
-  let userId = req.params.userId;
-  let userDetails = await UserModel.findById(userId);
-  if(!userDetails){
-    return res.send({status:false , msg:"No such user exists with this ID."});
-  }else{
-    next();
+const userValidation = async function (req, res, next) {
+  try {
+    let userId = req.params.userId;
+    let userDetails = await UserModel.findById(userId);
+
+    if (userDetails) {
+      next();
+    } else {
+      return res.status(404).send({ msg: "Error", Error: "No such user exists with this ID." });
+    }
+  } catch (err) {
+    res.status(500).send({ msg: "Error", Error: err.message });
   }
 }
 
-const tokenAuthentication = function(req , res , next){
+const tokenAuthentication = function (req, res, next) {
+  try {
     let token = req.headers["x-auth-token"];
-  if(!token){
-    return res.send({status:false , msg:"the header token is required."});
-  }
-  
-  let decoded = jwt.verify(token , "functionup-californium-secret-key");
-  if(!decoded){
-    return res.send({status:false , msg:"Invalid token id."});
-  }
+    if (!token) {
+      return res.status(400).send({ status: false, msg: "the header token is required." });
+    }
 
-  next();
+    let decoded = jwt.verify(token, "functionup-californium-secret-key");
+    if (!decoded) {
+      return res.status(401).send({ status: false, msg: "Invalid token id." });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({ msg: "Error", Error: err.message });
+  }
 }
 
-const tokenAuthorization = function(req , res , next){
+const tokenAuthorization = function (req, res, next) {
+  try{
   let token = req.headers["x-auth-token"];
-  if(!token){
-    return res.send({status:false , msg:"the header token is required."});
-  }
+    if (!token) {
+      return res.status(400).send({ status: false, msg: "the header token is required." });
+    }
 
-  let decoded = jwt.verify(token , "functionup-californium-secret-key")
-  if(!decoded){
-    return res.send({status: false , msg:"Invalid token ID"});
+    let decoded = jwt.verify(token, "functionup-californium-secret-key");
+    if (!decoded) {
+      return res.status(401).send({ status: false, msg: "Invalid token id." });
+    }
+    if (decoded.userId != req.params.userId) {
+      return res.status(403).send({ status: false, msg: "The loggdin user is not authorized." });
+    }
+    next();
+  }catch(err){
+    res.status(500).send({ msg: "Error", Error: err.message });
   }
-
-  if(decoded.userId != req.params.userId){
-    return res.send({status : false , msg : "The loggdin user is not authorized."})
-  }
-
-  next();
 }
 
 module.exports.userValidation = userValidation;
